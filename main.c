@@ -1,0 +1,88 @@
+#include <htc.h>
+
+__CONFIG (INTIO & BORDIS & OSC_4MHZ & UNPROTECT & MCLREN & PWRTDIS & WDTDIS);
+
+#define LED 0b00000001 //GP0
+#define BAT_CON_A 0b00000100 //GP2
+#define BAT_CON_B 0b00100000 //GP5
+
+#define V_CUTOFF 209 // (4.1/5.0) * 255 Stop charging at 4.1 volts
+
+void toggleLED() {
+    GPIO ^= LED;
+}
+
+void enableChargeA() {
+    // A low value enables charging
+    GPIO = GPIO & ~BAT_CON_A;
+}
+
+void disableChargeA() {
+    // A high value disables charging
+    GPIO |= BAT_CON_A;
+}
+
+void enableChargeB() {
+    // A low value enables charging
+    GPIO = GPIO & ~BAT_CON_B;
+}
+
+void disableChargeB() {
+    // A high value disables charging
+    GPIO |= BAT_CON_B;
+}
+
+unsigned char getVoltageA() {
+    ADCON0 = 0b00000101; // Start the ADC on AN1
+    for(char i = 0; i < 255; i++);
+    ADCON0 |= 0b00000010; // Start conversion
+    while(ADCON0 & 0b00000010); // Wait for conversion
+    unsigned char voltage = ADRESH;
+    if(voltage > V_CUTOFF) voltage = V_CUTOFF;
+    if(voltage < 120) voltage = V_CUTOFF; // Return high value if no battery present
+    return voltage;
+}
+
+unsigned char getVoltageB() {
+    ADCON0 = 0b00001101; // Start the ADC on AN3
+    for(char i = 0; i < 255; i++);
+    ADCON0 |= 0b00000010; // Start conversion
+    while(ADCON0 & 0b00000010); // Wait for conversion
+    unsigned char voltage = ADRESH;
+    if(voltage > V_CUTOFF) voltage = V_CUTOFF;
+    if(voltage < 120) voltage = V_CUTOFF; // Return high value if no battery present
+    return voltage;
+}
+
+void init() {
+    CCP1CON = 0b00000000; // Disable Comparater and PWM
+    TRISIO = ~(LED|BAT_CON_A|BAT_CON_B);
+    ANSEL = ~(LED|BAT_CON_A|BAT_CON_B);
+
+    disableChargeA();
+    disableChargeB();
+}
+
+void main() {
+    init();
+
+    while(1) {
+        disableChargeA();
+        disableChargeB();
+        unsigned char voltageA = getVoltageA();
+        unsigned char voltageB = getVoltageB();
+        unsigned char delay = (V_CUTOFF - voltageA) + (V_CUTOFF - voltageB);
+
+        for(unsigned char i = 0; i < delay; i++) {
+            for(unsigned char j = 0; j < 255; j++);
+        }
+        
+        toggleLED();
+
+        if(voltageA >= V_CUTOFF) disableChargeA();
+        if(voltageA <= V_CUTOFF-10) enableChargeA(); // Disable charging ~.2V below cutoff
+
+        if(voltageB >= V_CUTOFF) disableChargeB();
+        if(voltageB <= V_CUTOFF-10) enableChargeB(); // Disable charging ~.2V below cutoff
+    }
+}
