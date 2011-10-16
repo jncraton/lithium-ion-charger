@@ -1,36 +1,10 @@
-#include <htc.h>
+#include <pic.h>
+
+#include "io.h"
 
 __CONFIG (INTIO & BORDIS & OSC_4MHZ & UNPROTECT & MCLREN & PWRTDIS & WDTDIS);
 
-#define LED 0b00000001 //GP0
-#define BAT_CON_A 0b00000100 //GP2
-#define BAT_CON_B 0b00100000 //GP5
-
 #define V_CUTOFF 209 // (4.1/5.0) * 255 Stop charging at 4.1 volts
-
-void toggleLED() {
-    GPIO ^= LED;
-}
-
-void enableChargeA() {
-    // A low value enables charging
-    GPIO = GPIO & ~BAT_CON_A;
-}
-
-void disableChargeA() {
-    // A high value disables charging
-    GPIO |= BAT_CON_A;
-}
-
-void enableChargeB() {
-    // A low value enables charging
-    GPIO = GPIO & ~BAT_CON_B;
-}
-
-void disableChargeB() {
-    // A high value disables charging
-    GPIO |= BAT_CON_B;
-}
 
 unsigned char getVoltageA() {
     ADCON0 = 0b00000101; // Start the ADC on AN1
@@ -67,8 +41,6 @@ void main() {
     init();
 
     while(1) {
-        disableChargeA();
-        disableChargeB();
         unsigned char voltageA = getVoltageA();
         unsigned char voltageB = getVoltageB();
         unsigned char delay = (V_CUTOFF - voltageA) + (V_CUTOFF - voltageB);
