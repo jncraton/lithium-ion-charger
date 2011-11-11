@@ -862,7 +862,7 @@ download a copy.-->
 		<WIRE a='67.00000,58.00000' b='38.00000,58.00000'/>
 		<SYMBOL id='2' pos='62.00000,58.00000' part='0' rotate='7' can_scale='0' show_power='0' scale_x='1.00000' scale_y='1.00000'>
 			<FIELD type='1' description='Ref' value='D?' show='0' pos='-10.00000,2.00000'/>
-			<FIELD type='0' description='Name' value='LED' show='1' pos='-10.00000,-12.00000'/>
+			<FIELD type='0' description='Name' value='LED' show='1' pos='-10.00000,-6.00000'/>
 			<FIELD type='1' description='Package' value='' show='0' pos='-10.00000,4.40000'/>
 			<FIELD type='1' description='Vf' value='..' show='0' pos='-10.00000,6.80000'/>
 			<FIELD type='1' description='If' value='..' show='0' pos='-10.00000,9.20000'/>
@@ -935,7 +935,7 @@ download a copy.-->
 			<FIELD type='0' description='Ref' value='B?' show='0' pos='-8.00000,2.00000'/>
 			<FIELD type='0' description='Name' value='BATTERY' show='1' pos='-8.00000,-6.00000'/>
 		</SYMBOL>
-		<POWER pos='96.00000,16.00000' which='0' direction='0'>5V</POWER>
+		<POWER pos='96.00000,18.00000' which='0' direction='0'>5V</POWER>
 		<WIRE a='60.00000,46.00000' b='51.00000,46.00000'/>
 		<WIRE a='44.00000,46.00000' b='38.00000,46.00000'/>
 		<WIRE a='38.00000,54.00000' b='38.00000,46.00000'/>
@@ -981,11 +981,11 @@ download a copy.-->
 		<WIRE a='108.00000,32.00000' b='108.00000,26.00000'/>
 		<SYMBOL id='9' pos='124.00000,60.00000' part='0' rotate='4' can_scale='0' show_power='0' scale_x='1.00000' scale_y='1.00000'>
 			<FIELD type='0' description='Ref' value='B?' show='0' pos='1.00000,-3.60000'/>
-			<FIELD type='0' description='Name' value='BATTERY' show='1' pos='-1.00000,-6.00000'/>
+			<FIELD type='0' description='Name' value='BATTERY' show='1' pos='1.00000,-6.00000'/>
 		</SYMBOL>
 		<WIRE a='38.00000,58.00000' b='38.00000,60.00000'/>
 		<WIRE a='60.00000,21.00000' b='96.00000,21.00000'/>
-		<WIRE a='96.00000,21.00000' b='96.00000,16.00000'/>
+		<WIRE a='96.00000,21.00000' b='96.00000,18.00000'/>
 		<JUNCTION pos='96.00000,21.00000'/>
 		<WIRE a='104.00000,21.00000' b='116.00000,21.00000'/>
 		<WIRE a='104.00000,21.00000' b='104.00000,58.00000'/>
